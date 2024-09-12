@@ -103,7 +103,7 @@ int main(void)
 
   // enter your code here for problem 1
   reg_value = test_reg16;
-  reg_value = set_bit(reg_value, 0x0000);
+  reg_value = set_bit(reg_value, PIE_BIT_MASK);
   test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
@@ -116,7 +116,8 @@ int main(void)
 
   // enter your code here for problem 2
   reg_value = test_reg16;
-  reg_value = set_bit(reg_value, 0x0002);
+  reg_value = set_bit(reg_value, RD_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -127,6 +128,7 @@ int main(void)
   msp_printf("PROBLEM 3: Setting CRS bits\r\n", 0);
   reg_value = test_reg16;
   reg_value = set_bit(reg_value, CRS_BIT_MASK);
+  test_reg16 = reg_value;
   // enter your code here for problem 3
 
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
@@ -144,6 +146,7 @@ int main(void)
   reg_value = set_bit(reg_value, A1_BIT_MASK);
   reg_value = set_bit(reg_value, A2_BIT_MASK);
   reg_value = set_bit(reg_value, A3_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -157,11 +160,12 @@ int main(void)
 
   // enter your code here for problem 5
   reg_value = test_reg16;
-  if (check_bit(0x000E, A2_BIT_MASK)) {
+  if (check_bit(reg_value, A2_BIT_MASK) == true) {
     msp_printf("Bit A2 is 1\r\n", 0);
   } else {
     msp_printf("The bit A2 is 0\r\n", 0);
   }
+  test_reg16 = reg_value;
   msp_printf("\r\n",0);;
 
 
@@ -173,6 +177,7 @@ int main(void)
   // enter your code here for problem 6
   reg_value = test_reg16;
   clear_bit(reg_value, A2_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -186,6 +191,7 @@ int main(void)
   reg_value = test_reg16;
   clear_bit(reg_value, CRS_BIT_MASK);
   set_bit(reg_value, PRS_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -203,13 +209,14 @@ int main(void)
 
   // enter your code here for problem 8
   reg_value = test_reg16;
-  if (check_bit(reg_value, A2_BIT_MASK)) {
+  if (check_bit(reg_value, A2_BIT_MASK) == true) {
     msp_printf("Bit A2=1 so clearing it\r\n", 0);
     clear_bit(reg_value, A2_BIT_MASK);
   } else {
     msp_printf("Bit A2=0 so setting it\r\n", 0);
     set_bit(reg_value, A2_BIT_MASK);
   }
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -227,7 +234,7 @@ int main(void)
 
   // enter your code here for problem 8
   reg_value = test_reg16;
-  if (check_bit(reg_value, MD_BIT_MASK)) {
+  if (check_bit(reg_value, MD_BIT_MASK) == true) {
     msp_printf("Bit MD=0 setting mode=10\r\n", 0);
     set_bit(reg_value, MODE_10_BIT_VALUE);
     clear_bit(reg_value, MODE_01_BIT_VALUE);
@@ -236,6 +243,7 @@ int main(void)
     set_bit(reg_value, MODE_01_BIT_VALUE);
     set_bit(reg_value, MODE_10_BIT_VALUE);
   }
+  test_reg16 = reg_value;
 
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
@@ -261,6 +269,7 @@ int main(void)
   clear_bit(reg_value, A1_BIT_MASK);
   clear_bit(reg_value, A2_BIT_MASK);
   clear_bit(reg_value, A3_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
