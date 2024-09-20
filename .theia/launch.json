@@ -7,24 +7,6 @@
             "request": "launch",
             "projectInfo": {
                 "name": "Lab3Part1",
-                "resourceId": "/Lab3Part1"
-            }
-        },
-        {
-            "name": "Lab3Part2",
-            "type": "ccs-debug",
-            "request": "launch",
-            "projectInfo": {
-                "name": "Lab3Part2",
-                "resourceId": "/Lab3Part2/Lab3_p2.s"
-            }
-        },
-        {
-            "name": "Lab3Part1 (1)",
-            "type": "ccs-debug",
-            "request": "launch",
-            "projectInfo": {
-                "name": "Lab3Part1",
                 "resourceId": "/Lab3Part1/lab3p1_main_template.c"
             }
         }
