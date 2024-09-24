@@ -85,3 +85,18 @@ void run_lab_5(void){
     }
 
 }
+void run_lab_5p2(void){
+    // while (loop_count) < ----){
+        // switch (state)
+            //case(get low)
+                //read sw1
+                // number |= sw1value
+                //if(is_pb_down SW2)
+                //state = get_low
+            //case(Get High)
+                //read_sw1
+                //number |= (SW_value << 4)
+                //if(is is_pb_down SW2)
+                // state = display
+    //}
+}
