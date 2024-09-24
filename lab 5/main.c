@@ -56,7 +56,32 @@ int main(void)
     keypad_init();
  // Endless loop to prevent program from ending
  while (1);
-    
 
 } /* main */
 
+void run_lab_5(void){
+    uint32_t loop_count = 0;
+    uint32_t p1_iterations = 4;
+    bool display_on = false;
+    while (loop_count < p1_iterations) {
+        while (is_pb_down == true) {
+            if (display_on == false) {
+                /* turn on display and show 3*/
+                seg7_on(3,0);
+                display_on = true;
+            }else {
+                /* turn off display*/
+                display_on = false;
+                seg7_off();
+            }
+            loop_count += 1;
+            while(is_pb_down == true){
+                msec_delay(10);
+                // checks to see if button is being held down
+            }
+            msec_delay(10);
+            /* delay of 10 ms*/
+        }
+    }
+
+}
