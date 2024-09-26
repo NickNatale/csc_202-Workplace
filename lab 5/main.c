@@ -18,6 +18,9 @@
 //-----------------------------------------------------------------------------
 // Loads standard C include files
 //-----------------------------------------------------------------------------
+
+
+
 #include <stdio.h>
 
 //-----------------------------------------------------------------------------
@@ -26,7 +29,6 @@
 #include <ti/devices/msp/msp.h>
 #include "LaunchPad.h"
 #include "clock.h"
-#include "LaunchPad.h"
 
 
 //-----------------------------------------------------------------------------
@@ -43,7 +45,13 @@
 // Define global variables and structures here.
 // NOTE: when possible avoid using global variables
 //-----------------------------------------------------------------------------
-
+typedef enum 
+{
+     get_low,
+     get_high,
+     display
+} fsm_states_t;
+fsm_states_t state;
 
 // Define a structure to hold different data types
 
@@ -86,17 +94,36 @@ void run_lab_5(void){
 
 }
 void run_lab_5p2(void){
-    // while (loop_count) < ----){
-        // switch (state)
-            //case(get low)
-                //read sw1
-                // number |= sw1value
-                //if(is_pb_down SW2)
-                //state = get_low
-            //case(Get High)
-                //read_sw1
-                //number |= (SW_value << 4)
-                //if(is is_pb_down SW2)
-                // state = display
-    //}
+    uint32_t loop_count = 0;
+    uint8_t display_number = 0;
+    uint8_t dip_sw_val = 0;
+     while (loop_count < 4){
+         switch (state){
+            case(get_low):
+                dip_sw_val = dipsw_read();
+                 display_number |= dip_sw_val;
+                if(is_lspw_down(LP_SW2_IDX) == true){
+                    state = get_high;
+                }
+            case(get_high):
+                dip_sw_val = dipsw_read();
+                display_number |= (dip_sw_val << 4);
+                if(is_lspw_down(LP_SW2_IDX) == true){
+                    state = display;
+                }
+            case(display):
+                if(is_pb_down == true){
+                    seg7_on(display_number, SEG7_DIG2_ENABLE_IDX);
+                    while(is_lspw_down == true){
+                        msec_delay(10);
+                    }
+                } else{
+                    seg7_on(display_number, SEG7_DIG0_ENABLE_IDX);
+                    while(is_lspw_down == true){
+                        msec_delay(10);
+                    }
+                }
+                loop_count += 1;
+         }
+    }
 }
