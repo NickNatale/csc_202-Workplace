@@ -64,16 +64,15 @@ int main(void)
     lpsw_init();
     dipsw_init();
     keypad_init();
+ // Endless loop to prevent program from ending
+ while (1);
     run_lab_5();
     run_lab_5p2();
     run_lab_5p3();
     run_lab_5p4();
- // Endless loop to prevent program from ending
- while (1);
-
 } /* main */
 
-void run_lab_5(void){
+void run_lab_5(){
     uint32_t loop_count = 0;
     uint32_t p1_iterations = 4;
     bool display_on = false;
@@ -99,7 +98,7 @@ void run_lab_5(void){
     }
 
 }
-void run_lab_5p2(void){
+void run_lab_5p2(){
     uint32_t loop_count = 0;
     uint8_t display_number = 0;
     uint8_t dip_sw_val = 0;
@@ -137,7 +136,7 @@ void run_lab_5p2(void){
     }
 }
 
-void run_lab_5p3(void){
+void run_lab_5p3(){
     uint8_t loop_count = 0;
     uint8_t key_pressed = 0;
     led_init();
@@ -153,7 +152,7 @@ void run_lab_5p3(void){
     leds_off();
 }
 
-void run_lab_5p4(void){
+void run_lab_5p4(){
     uint8_t loop_count = 0;
     uint8_t key_pressed = 0;
     uint8_t led_loop_count = 0;
