@@ -21,6 +21,8 @@
 
 
 
+
+
 #include <stdio.h>
 
 //-----------------------------------------------------------------------------
@@ -62,6 +64,10 @@ int main(void)
     lpsw_init();
     dipsw_init();
     keypad_init();
+    run_lab_5();
+    run_lab_5p2();
+    run_lab_5p3();
+    run_lab_5p4();
  // Endless loop to prevent program from ending
  while (1);
 
@@ -100,18 +106,21 @@ void run_lab_5p2(void){
      while (loop_count < 4){
          switch (state){
             case(get_low):
+            //reads the low values on the switch
                 dip_sw_val = dipsw_read();
                  display_number |= dip_sw_val;
                 if(is_lspw_down(LP_SW2_IDX) == true){
                     state = get_high;
                 }
             case(get_high):
+            // reads the high values on the switch
                 dip_sw_val = dipsw_read();
                 display_number |= (dip_sw_val << 4);
                 if(is_lspw_down(LP_SW2_IDX) == true){
                     state = display;
                 }
             case(display):
+            //displays the numbers on the 7seg display
                 if(is_pb_down == true){
                     seg7_on(display_number, SEG7_DIG2_ENABLE_IDX);
                     while(is_lspw_down == true){
@@ -125,5 +134,33 @@ void run_lab_5p2(void){
                 }
                 loop_count += 1;
          }
+    }
+}
+
+void run_lab_5p3(void){
+    uint8_t loop_count = 0;
+    uint8_t key_pressed = 0;
+    led_init();
+    led_enable();
+    seg7_off();
+    while(loop_count < 8){
+        // check for key pressed wait until unpress then light LED
+        key_pressed = getkey_pressed();
+        wait_no_key_pressed();
+        leds_on(key_pressed);
+        loop_count+=1;
+    }
+    leds_off();
+}
+
+void run_lab_5p4(void){
+    uint8_t loop_count = 0;
+    uint8_t key_pressed = 0;
+    uint8_t led_loop_count = 0;
+    while(loop_count < 4){
+        key_pressed = getkey_pressed();
+        while(led_loop_count < key_pressed){
+            leds_on(255);
+        }
     }
 }
