@@ -36,7 +36,6 @@
 // Loads MSP launchpad board support macros and definitions
 //-----------------------------------------------------------------------------
 #include <stdio.h>
-#include <cstdint>
 #include <ti/devices/msp/msp.h>
 #include "clock.h"
 #include "uart.h"
@@ -119,7 +118,8 @@ int main(void)
 
   // enter your code here for problem 2
   reg_value = test_reg16;
-  reg_value = my_asm_16bitset(reg_value, 0x0002);
+  reg_value = my_asm_16bitset(reg_value, RD_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -132,6 +132,7 @@ int main(void)
   // enter your code here for problem 3
   reg_value = test_reg16;
   reg_value = my_asm_16bitset(reg_value, CRS_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -147,6 +148,7 @@ int main(void)
   reg_value = my_asm_16bitset(reg_value, A1_BIT_MASK);
   reg_value = my_asm_16bitset(reg_value, A2_BIT_MASK);
   reg_value = my_asm_16bitset(reg_value, A3_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -165,6 +167,7 @@ int main(void)
   } else {
     msp_printf("The bit A2 is 0\r\n", 0);
   }
+  test_reg16 = reg_value;
   msp_printf("\r\n",0);;
   msp_printf("\r\n",0);;
 
@@ -177,6 +180,7 @@ int main(void)
   // enter your code here for problem 6
   reg_value = test_reg16;
   my_asm_16bitclr(reg_value, A2_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -190,6 +194,7 @@ int main(void)
   reg_value = test_reg16;
   my_asm_16bitclr(reg_value, CRS_BIT_MASK);
   my_asm_16bitset(reg_value, PRS_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -214,6 +219,7 @@ int main(void)
     msp_printf("Bit A2=0 so setting it\r\n", 0);
     my_asm_16bitset(reg_value, A2_BIT_MASK);
   }
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -240,6 +246,7 @@ int main(void)
     my_asm_16bitset(reg_value, MODE_01_BIT_VALUE);
     my_asm_16bitset(reg_value, MODE_10_BIT_VALUE);
   }
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -264,6 +271,7 @@ int main(void)
   my_asm_16bitclr(reg_value, A1_BIT_MASK);
   my_asm_16bitclr(reg_value, A2_BIT_MASK);
   my_asm_16bitclr(reg_value, A3_BIT_MASK);
+  test_reg16 = reg_value;
   msp_printf("    --> Test reg = 0x%04X\r\n", test_reg16);
   msp_printf("\r\n",0);;
 
@@ -272,5 +280,17 @@ int main(void)
   
 
 } /* main */
+void msp_printf(char* buffer, unsigned int value)
+{
+  unsigned int i = 0;
+  unsigned int len = 0;
+  char   string[80];
 
+  len = sprintf(string, buffer, value);
+
+  for (i = 0; i< len; i++)
+  {
+    UART_out_char(string[i]);
+  }
+}
 

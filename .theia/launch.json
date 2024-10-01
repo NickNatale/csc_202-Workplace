@@ -9,6 +9,17 @@
                 "name": "Lab3Part1",
                 "resourceId": "/Lab3Part1/lab3p1_main_template.c"
             }
+        },
+        {
+            "name": "Lab3Part1 (2)",
+            "type": "ccs-debug",
+            "request": "launch"
+        },
+        {
+            "name": "Lab 6",
+            "type": "ccs-debug",
+            "request": "launch",
+            "project": "Lab 6"
         }
     ]
 }
