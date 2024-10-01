@@ -53,6 +53,7 @@ int main(void)
     launchpad_gpio_init();
     I2C_init();
     lcd1602_init();
+    dipsw_init();
 
     
     /* clear and set pos to 1: lcd_clear();*/
@@ -86,4 +87,11 @@ void run_lab6_p2(void){
     uint16_t sixteen_bit_num = 12345;
     uint8_t eight_bit_num = 123;
     lcd_clear();
+    lcd_write_quadbyte(thirtytwo_bit_num);
+    lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
+    lcd_write_doublebyte(sixteen_bit_num);
+    lcd_set_ddram_addr(LCD_LINE1_ADDR + LCD_CHAR_POSITION_4);
+    lcd_write_byte(eight_bit_num);
+    while(is_pb_down())
+
 }
