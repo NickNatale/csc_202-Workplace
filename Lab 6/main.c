@@ -33,7 +33,7 @@
 // Define function prototypes used by the program
 //-----------------------------------------------------------------------------
 void run_lab6_p1(void);
-
+void run_lab6_p2(void);
 //-----------------------------------------------------------------------------
 // Define symbolic constants used by the program
 //-----------------------------------------------------------------------------
@@ -66,6 +66,18 @@ int main(void)
         if(idx == LCD_CHAR_PER_LCD_LINE -1)
             */
     run_lab6_p1();
+    while(is_pb_up(PB2_IDX));
+    msec_delay(20);
+    while (is_pb_down(PB2_IDX));
+    msec_delay(20);
+    run_lab6_p2();
+    lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
+    lcd_write_string("Press PB2");
+    while(is_pb_up(PB2_IDX));
+    msec_delay(20);
+    while (is_pb_down(PB2_IDX));
+    msec_delay(20);
+    lcd_clear();
  // Endless loop to prevent program from ending
     while (1);
 
@@ -86,15 +98,31 @@ void run_lab6_p2(void){
     uint32_t thirtytwo_bit_num = 1234567890;
     uint16_t sixteen_bit_num = 12345;
     uint8_t eight_bit_num = 123;
-    lcd_clear();
-    lcd_write_quadbyte(thirtytwo_bit_num);
-    lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
-    lcd_write_doublebyte(sixteen_bit_num);
+    lcd_clear(); //clear lcd
+    //each of the following while loops are to wait for debounce
+    //and wait for the button to be released before continuing
     lcd_set_ddram_addr(LCD_LINE1_ADDR + LCD_CHAR_POSITION_4);
+    lcd_write_quadbyte(thirtytwo_bit_num);
+    while(is_pb_up(PB1_IDX));
+    msec_delay(20);
+    while (is_pb_down(PB1_IDX));
+    msec_delay(20);
+    // 16 bit num
+    lcd_clear();
+    lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_7);
+    lcd_write_doublebyte(sixteen_bit_num);
+    while(is_pb_up(PB1_IDX));
+    msec_delay(20);
+    while (is_pb_down(PB1_IDX));
+    msec_delay(20);
+    //eight bit num
+    lcd_clear();
+    lcd_set_ddram_addr(LCD_LINE1_ADDR + LCD_CHAR_POSITION_8);
     lcd_write_byte(eight_bit_num);
-    while(is_pb_down(0) == false)
-    {
-        
-    }
-
+    while(is_pb_up(PB1_IDX));
+    msec_delay(20);
+    while (is_pb_down(PB1_IDX));
+    msec_delay(20);
+    lcd_clear();
+    lcd_write_string("Part 2 Finished.");
 }
