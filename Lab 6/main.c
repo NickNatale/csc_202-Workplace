@@ -18,6 +18,8 @@
 //-----------------------------------------------------------------------------
 // Loads standard C include files
 //-----------------------------------------------------------------------------
+
+
 #include <stdio.h>
 
 //-----------------------------------------------------------------------------
@@ -34,6 +36,7 @@
 //-----------------------------------------------------------------------------
 void run_lab6_p1(void);
 void run_lab6_p2(void);
+void run_lab6_p3(void);
 //-----------------------------------------------------------------------------
 // Define symbolic constants used by the program
 //-----------------------------------------------------------------------------
@@ -70,6 +73,9 @@ int main(void)
     msec_delay(20);
     while (is_pb_down(PB2_IDX));
     msec_delay(20);
+    lcd_clear();
+    lcd_write_string("Running Lab 2.");
+    msec_delay(1000);
     run_lab6_p2();
     lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
     lcd_write_string("Press PB2");
@@ -78,6 +84,11 @@ int main(void)
     while (is_pb_down(PB2_IDX));
     msec_delay(20);
     lcd_clear();
+    lcd_write_string("Running Lab 3.");
+    msec_delay(1000);
+    run_lab6_p3();
+    lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
+    lcd_write_string("Press PB2");
  // Endless loop to prevent program from ending
     while (1);
 
@@ -125,4 +136,59 @@ void run_lab6_p2(void){
     msec_delay(20);
     lcd_clear();
     lcd_write_string("Part 2 Finished.");
+}
+void run_lab6_p3(void){
+    lcd_clear(); // clear lcd
+    uint8_t timer_count = 100; //set timer
+    while(timer_count > 0){
+        // clears then writes the current timer to the center of line 1
+        lcd_clear();
+        lcd_set_ddram_addr(LCD_LINE1_ADDR + LCD_CHAR_POSITION_8);
+        lcd_write_byte(timer_count -1);
+        msec_delay(200);
+        timer_count -= 1;
+        if (timer_count == 0){
+            // if timer runs out reset
+            timer_count = 100;
+        }else if ((is_pb_down(PB1_IDX))) {
+            while(is_pb_up(PB1_IDX));
+            msec_delay(20);
+            while (is_pb_down(PB1_IDX));
+            msec_delay(20);
+            timer_count = 100;
+        }
+        if (is_pb_down(PB2_IDX)) {
+            while(is_pb_up(PB2_IDX));
+            msec_delay(20);
+            while (is_pb_down(PB2_IDX));
+            msec_delay(20);
+            timer_count = 0;
+        }
+    }
+    lcd_clear();
+    lcd_write_string("Part 3 Finished.");
+}
+void run_lab6_p4(void){
+    lcd_clear();
+    uint8_t keycount = 0;
+    uint8_t keypress = 0;
+    while(done == false){
+        if (keycount != 16) {
+            keypress = keypad_scan();
+            wait_no_key_pressed();
+            hex_to_lcd(keypress);
+            idx++;
+        }
+        if(idx > 16){
+            lcd_set_ddram_addr(idx);
+        }
+        if (idx > 32) {
+            lcd_clear();
+            idx = 0;
+            lcd_set_ddram_addr(idx);
+            hex_to_lcd(keypress);
+        }
+
+    }
+
 }
