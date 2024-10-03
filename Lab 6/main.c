@@ -92,6 +92,9 @@ void run_lab6_p2(void){
     lcd_write_doublebyte(sixteen_bit_num);
     lcd_set_ddram_addr(LCD_LINE1_ADDR + LCD_CHAR_POSITION_4);
     lcd_write_byte(eight_bit_num);
-    while(is_pb_down())
+    while(is_pb_down(0) == false)
+    {
+        
+    }
 
 }
