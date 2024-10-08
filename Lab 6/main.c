@@ -59,6 +59,7 @@ int main(void)
     I2C_init();
     lcd1602_init();
     dipsw_init();
+    keypad_init();
 
     
     /* clear and set pos to 1: lcd_clear();*/
