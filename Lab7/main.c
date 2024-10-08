@@ -18,7 +18,7 @@
 //-----------------------------------------------------------------------------
 // Loads standard C include files
 //-----------------------------------------------------------------------------
-#include <cstdint>
+
 #include <stdio.h>
 
 //-----------------------------------------------------------------------------
@@ -27,17 +27,20 @@
 #include <ti/devices/msp/msp.h>
 #include "LaunchPad.h"
 #include "clock.h"
+#include "lcd1602.h"
 
 
 //-----------------------------------------------------------------------------
 // Define function prototypes used by the program
 //-----------------------------------------------------------------------------
-#define MSPM0_CLOCK_FREQUENCY                                             (40E6)
-#define SYST_TICK_PERIOD                                              (10.25E-3)
-#define SYST_TICK_PERIOD_COUNT        (SYST_TICK_PERIOD * MSPM0_CLOCK_FREQUENCY)
+void run_lab7_p1(void);
+void SysTick_Handler(void);
 //-----------------------------------------------------------------------------
 // Define symbolic constants used by the program
 //-----------------------------------------------------------------------------
+#define MSPM0_CLOCK_FREQUENCY                                             (40E6)
+#define SYST_TICK_PERIOD                                              (10.25E-3)
+#define SYST_TICK_PERIOD_COUNT        (SYST_TICK_PERIOD * MSPM0_CLOCK_FREQUENCY)
 #define NUM_STATES                18
 
 //-----------------------------------------------------------------------------
@@ -48,7 +51,7 @@ const uint8_t seg7_letter_code[] =
 {
     0x6D, 0x00, 0x6D, 0x00, 0x6D, 0x00,   //S
     0x3F, 0x00, 0x3F, 0x00, 0x3F, 0x00,   //O
-    0x6D, 0x00, 0x6D, 0x00, 0x6D, 0x00   //S
+    0x6D, 0x00, 0x6D, 0x00, 0x6D, 0x00    //S
 };
 const uint8_t delay_count[] =
 {
@@ -67,8 +70,9 @@ int main(void)
     led_disable();
     seg7_init();
     sys_tick_init(SYST_TICK_PERIOD_COUNT);
+    lcd1602_init();
 
-
+    run_lab7_p1();
  // Endless loop to prevent program from ending
  while (1);
 
@@ -92,4 +96,25 @@ void SysTick_Handler(void)
             code_index == 0;
         }
     }
+}
+
+void run_lab7_p1(void)
+{
+    while (true) {
+        uint32_t addr = 0;
+        for (addr = 0x4F; addr >= 0x40; addr--){
+            lcd_set_ddram_addr(addr);
+            lcd_write_string("Microcontrollers are fun.");
+        }
+        uint32_t idx = 0;
+        while ("Microcontrollers are fun."[idx] != '\0') {
+            lcd_set_ddram_addr(0x40);
+            lcd_write_string("Microcontrollers are fun." + idx);
+            idx++;
+    }
+    
+    }
+
+
+
 }
