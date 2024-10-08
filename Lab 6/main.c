@@ -20,6 +20,7 @@
 //-----------------------------------------------------------------------------
 
 
+
 #include <stdio.h>
 
 //-----------------------------------------------------------------------------
@@ -37,6 +38,7 @@
 void run_lab6_p1(void);
 void run_lab6_p2(void);
 void run_lab6_p3(void);
+void run_lab6_p4(void);
 //-----------------------------------------------------------------------------
 // Define symbolic constants used by the program
 //-----------------------------------------------------------------------------
@@ -74,7 +76,7 @@ int main(void)
     while (is_pb_down(PB2_IDX));
     msec_delay(20);
     lcd_clear();
-    lcd_write_string("Running Lab 2.");
+    lcd_write_string("Running Part 2");
     msec_delay(1000);
     run_lab6_p2();
     lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
@@ -84,11 +86,19 @@ int main(void)
     while (is_pb_down(PB2_IDX));
     msec_delay(20);
     lcd_clear();
-    lcd_write_string("Running Lab 3.");
+    lcd_write_string("Running Part 3");
     msec_delay(1000);
     run_lab6_p3();
     lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
     lcd_write_string("Press PB2");
+    while(is_pb_up(PB2_IDX));
+    msec_delay(20);
+    while (is_pb_down(PB2_IDX));
+    msec_delay(20);
+    lcd_clear();
+    lcd_write_string("Running Part 4");
+    msec_delay(1000);
+    run_lab6_p4();
  // Endless loop to prevent program from ending
     while (1);
 
@@ -170,12 +180,13 @@ void run_lab6_p3(void){
 }
 void run_lab6_p4(void){
     lcd_clear();
-    uint8_t keycount = 0;
     uint8_t keypress = 0;
+    uint8_t idx = 0;
+    bool done = false;
     while(done == false){
-        if (keycount != 16) {
-            keypress = keypad_scan();
-            wait_no_key_pressed();
+        keypress = keypad_scan();
+        wait_no_key_pressed();
+        if (keypress != 16) {
             hex_to_lcd(keypress);
             idx++;
         }
@@ -188,7 +199,17 @@ void run_lab6_p4(void){
             lcd_set_ddram_addr(idx);
             hex_to_lcd(keypress);
         }
-
+        if(is_pb_down(PB1_IDX)){
+            lcd_clear();
+            idx = 0;
+            lcd_set_ddram_addr(idx);
+            hex_to_lcd(keypress);
+        }
+        if(is_pb_down(PB2_IDX)){
+            done = true;
+            lcd_clear();
+            lcd_write_string("Program Stopped");
+        }
     }
 
 }

@@ -20,6 +20,16 @@
             "type": "ccs-debug",
             "request": "launch",
             "project": "Lab 6"
+        },
+        {
+            "name": "Lab3Part1 (1)",
+            "type": "ccs-debug",
+            "request": "launch"
+        },
+        {
+            "name": "Lab3Part1 (3)",
+            "type": "ccs-debug",
+            "request": "launch"
         }
     ]
 }
