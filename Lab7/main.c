@@ -100,12 +100,19 @@ void SysTick_Handler(void)
 
 void run_lab7_p1(void)
 {
-    while (true) {
+    lcd_clear();
+    bool done = false;
+    while (!done) {
         uint32_t addr = 0;
         for (addr = 0x4F; addr >= 0x40; addr--){
             lcd_set_ddram_addr(addr);
             lcd_write_string("Microcontrollers are fun.");
+            if(is_pb_down(PB2_IDX)){
+                while(is_pb_down(PB2_IDX));
+                done = true;
+            }
         }
+    }
         uint32_t idx = 0;
         while ("Microcontrollers are fun."[idx] != '\0') {
             lcd_set_ddram_addr(0x40);
