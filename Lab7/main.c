@@ -35,6 +35,7 @@
 //-----------------------------------------------------------------------------
 void run_lab7_p1(void);
 void SysTick_Handler(void);
+void run_lab7_p2(void);
 //-----------------------------------------------------------------------------
 // Define symbolic constants used by the program
 //-----------------------------------------------------------------------------
@@ -67,6 +68,7 @@ int main(void)
     launchpad_gpio_init();
 
     led_init();
+    dipsw_init();
     led_disable();
     seg7_init();
     sys_tick_init(SYST_TICK_PERIOD_COUNT);
@@ -75,6 +77,16 @@ int main(void)
 
 
     run_lab7_p1();
+    lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
+    lcd_write_string("Press PB2");
+    while(is_pb_up(PB2_IDX));
+    msec_delay(20);
+    while (is_pb_down(PB2_IDX));
+    msec_delay(20);
+    lcd_clear();
+    lcd_write_string("Running Part 2");
+    msec_delay(1000);
+    run_lab7_p2();
  // Endless loop to prevent program from ending
  while (1);
 
@@ -106,23 +118,81 @@ void run_lab7_p1(void)
     bool done = false;
     while (!done) {
         uint32_t addr = 0;
-        for (addr = 0x4F; addr >= 0x40; addr--){
+        for (addr = 0x4F; addr >= 0x40 && !done; addr--){
             lcd_clear();
             lcd_set_ddram_addr(addr);
             lcd_write_string("Microcontrollers are fun.");
             msec_delay(100);
             if(is_pb_down(PB2_IDX)){
+                while(is_pb_up(PB2_IDX));
+                msec_delay(20);
                 while(is_pb_down(PB2_IDX));
                 done = true;
+                lcd_clear();
+                seg7_off();
+                sys_tick_disable();
+                lcd_write_string("Part 1 Done.");
             }
         }
         uint32_t idx = 0;
-        while ("Microcontrollers are fun."[idx] != '\0') {
+        while ("Microcontrollers are fun."[idx] != '\0' && !done) {
             lcd_clear();
             lcd_set_ddram_addr(0x40);
             lcd_write_string("Microcontrollers are fun." + idx);
             msec_delay(100);
             idx++;
+            if(is_pb_down(PB2_IDX)){
+                while(is_pb_up(PB2_IDX));
+                msec_delay(20);
+                while(is_pb_down(PB2_IDX));
+                done = true;
+                lcd_clear();
+                seg7_off();
+                sys_tick_disable();
+                lcd_write_string("Part 1 Done.");
+            }
+        }
+    }
+}
+
+void run_lab7_p2(void){
+    lcd_clear();
+    bool done = false;
+    while (!done) {
+        uint32_t addr = 0;
+        for (addr = 0x4F; addr >= 0x40 && !done; addr--){
+            lcd_clear();
+            lcd_set_ddram_addr(addr);
+            lcd_write_string("“Microcontrollers are fun. I love programming in MSPM0+ assembly code!!!");
+            msec_delay(100);
+            if(is_pb_down(PB2_IDX)){
+                while(is_pb_up(PB2_IDX));
+                msec_delay(20);
+                while(is_pb_down(PB2_IDX));
+                done = true;
+                lcd_clear();
+                seg7_off();
+                sys_tick_disable();
+                lcd_write_string("Part 2 Done.");
+            }
+        }
+        uint32_t idx = 0;
+        while ("“Microcontrollers are fun. I love programming in MSPM0+ assembly code!!!"[idx] != '\0' && !done) {
+            lcd_clear();
+            lcd_set_ddram_addr(0x40);
+            lcd_write_string("“Microcontrollers are fun. I love programming in MSPM0+ assembly code!!!" + idx);
+            msec_delay(100);
+            idx++;
+            if(is_pb_down(PB2_IDX)){
+                while(is_pb_up(PB2_IDX));
+                msec_delay(20);
+                while(is_pb_down(PB2_IDX));
+                done = true;
+                lcd_clear();
+                seg7_off();
+                sys_tick_disable();
+                lcd_write_string("Part 2 Done.");
+            }
         }
     }
 }
