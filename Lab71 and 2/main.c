@@ -77,7 +77,7 @@ int main(void)
     I2C_init();
     lcd1602_init();
 
-
+    seg7_off();
     run_lab7_p1();
     lcd_set_ddram_addr(LCD_LINE2_ADDR + LCD_CHAR_POSITION_4);
     lcd_write_string("Press PB2");
@@ -98,7 +98,6 @@ void SysTick_Handler(void)
 {
     static uint16_t delay_time = 1;
     static uint16_t code_index = 0;
-
     delay_time--;
     if (delay_time == 0)
     {
@@ -109,7 +108,7 @@ void SysTick_Handler(void)
 
         if(code_index == NUM_STATES)
         {
-            code_index == 0;
+            code_index = 0;
         }
     }
 }
@@ -117,7 +116,7 @@ void SysTick_Handler(void)
 void lcd_string_parser(char* string, uint8_t start_lcd_adder, uint8_t end_lcd_adder){
     uint8_t total_to_write = start_lcd_adder - end_lcd_adder;
     uint8_t idx = 0;
-    while(string[idx] != '\0' && idx != total_to_write){
+    while(string[idx] != '\0' && idx <= total_to_write){
         lcd_write_char(string[idx]);
         idx++;
     }
@@ -171,6 +170,7 @@ void run_lab7_p1(void)
 }
 
 void run_lab7_p2(void){
+    sys_tick_init(SYST_TICK_PERIOD_COUNT);
     lcd_clear();
     bool done = false;
     while (!done) {
