@@ -19,6 +19,7 @@
 // Loads standard C include files
 //-----------------------------------------------------------------------------
 
+
 #include <stdio.h>
 
 //-----------------------------------------------------------------------------
@@ -36,6 +37,7 @@
 void run_lab7_p1(void);
 void SysTick_Handler(void);
 void run_lab7_p2(void);
+void lcd_string_parser(char* string, uint8_t start_lcd_adder, uint8_t end_lcd_adder);
 //-----------------------------------------------------------------------------
 // Define symbolic constants used by the program
 //-----------------------------------------------------------------------------
@@ -66,7 +68,7 @@ int main(void)
 {
     clock_init_40mhz();
     launchpad_gpio_init();
-
+    //inits
     led_init();
     dipsw_init();
     led_disable();
@@ -112,17 +114,28 @@ void SysTick_Handler(void)
     }
 }
 
+void lcd_string_parser(char* string, uint8_t start_lcd_adder, uint8_t end_lcd_adder){
+    uint8_t total_to_write = start_lcd_adder - end_lcd_adder;
+    uint8_t idx = 0;
+    while(string[idx] != '\0' && idx != total_to_write){
+        lcd_write_char(string[idx]);
+        idx++;
+    }
+}
+
 void run_lab7_p1(void)
 {
     lcd_clear();
     bool done = false;
     while (!done) {
         uint32_t addr = 0;
+        // scroll through the string
         for (addr = 0x4F; addr >= 0x40 && !done; addr--){
             lcd_clear();
             lcd_set_ddram_addr(addr);
             lcd_write_string("Microcontrollers are fun.");
             msec_delay(100);
+            // check for button press
             if(is_pb_down(PB2_IDX)){
                 while(is_pb_up(PB2_IDX));
                 msec_delay(20);
@@ -135,12 +148,14 @@ void run_lab7_p1(void)
             }
         }
         uint32_t idx = 0;
+        // scroll and delete
         while ("Microcontrollers are fun."[idx] != '\0' && !done) {
             lcd_clear();
             lcd_set_ddram_addr(0x40);
             lcd_write_string("Microcontrollers are fun." + idx);
             msec_delay(100);
             idx++;
+            // check for button press
             if(is_pb_down(PB2_IDX)){
                 while(is_pb_up(PB2_IDX));
                 msec_delay(20);
@@ -163,7 +178,7 @@ void run_lab7_p2(void){
         for (addr = 0x4F; addr >= 0x40 && !done; addr--){
             lcd_clear();
             lcd_set_ddram_addr(addr);
-            lcd_write_string("“Microcontrollers are fun. I love programming in MSPM0+ assembly code!!!");
+            lcd_string_parser("Microcontrollers are fun. I love programming in MSPM0+ assembly code!!!", 0x4F, 0x40);
             msec_delay(100);
             if(is_pb_down(PB2_IDX)){
                 while(is_pb_up(PB2_IDX));
@@ -180,7 +195,7 @@ void run_lab7_p2(void){
         while ("“Microcontrollers are fun. I love programming in MSPM0+ assembly code!!!"[idx] != '\0' && !done) {
             lcd_clear();
             lcd_set_ddram_addr(0x40);
-            lcd_write_string("“Microcontrollers are fun. I love programming in MSPM0+ assembly code!!!" + idx);
+            lcd_string_parser("Microcontrollers are fun. I love programming in MSPM0+ assembly code!!!" + idx, 0x4F, 0x40);
             msec_delay(100);
             idx++;
             if(is_pb_down(PB2_IDX)){

@@ -47,10 +47,10 @@
             "request": "launch"
         },
         {
-            "name": "Lab7",
+            "name": "Lab71 and 2",
             "type": "ccs-debug",
             "request": "launch",
-            "project": "Lab7"
+            "project": "Lab71 and 2"
         },
         {
             "name": "Lab3Part1 (7)",
