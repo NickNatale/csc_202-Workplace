@@ -70,7 +70,9 @@ int main(void)
     led_disable();
     seg7_init();
     sys_tick_init(SYST_TICK_PERIOD_COUNT);
+    I2C_init();
     lcd1602_init();
+
 
     run_lab7_p1();
  // Endless loop to prevent program from ending
@@ -105,23 +107,22 @@ void run_lab7_p1(void)
     while (!done) {
         uint32_t addr = 0;
         for (addr = 0x4F; addr >= 0x40; addr--){
+            lcd_clear();
             lcd_set_ddram_addr(addr);
             lcd_write_string("Microcontrollers are fun.");
+            msec_delay(100);
             if(is_pb_down(PB2_IDX)){
                 while(is_pb_down(PB2_IDX));
                 done = true;
             }
         }
-    }
         uint32_t idx = 0;
         while ("Microcontrollers are fun."[idx] != '\0') {
+            lcd_clear();
             lcd_set_ddram_addr(0x40);
             lcd_write_string("Microcontrollers are fun." + idx);
+            msec_delay(100);
             idx++;
+        }
     }
-    
-    }
-
-
-
 }

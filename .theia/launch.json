@@ -51,6 +51,11 @@
             "type": "ccs-debug",
             "request": "launch",
             "project": "Lab7"
+        },
+        {
+            "name": "Lab3Part1 (7)",
+            "type": "ccs-debug",
+            "request": "launch"
         }
     ]
 }
