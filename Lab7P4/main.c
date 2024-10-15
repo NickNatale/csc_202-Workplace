@@ -3,7 +3,7 @@
 //*****************************************************************************
 //  DESIGNER NAME:  Nick Natale
 //
-//       LAB NAME:  7 p3
+//       LAB NAME:  7 p4
 //
 //      FILE NAME:  main.c
 //
@@ -28,6 +28,7 @@
 #include "LaunchPad.h"
 #include "clock.h"
 #include "lcd1602.h"
+#include "ti/devices/msp/m0p/mspm0g350x.h"
 
 //-----------------------------------------------------------------------------
 // Define function prototypes used by the program
@@ -107,6 +108,16 @@ void SysTick_Handler(void)
             code_index == 0;
         }
     }
+}
+void config_pb1_interrupts(void){
+    //gpioB bit 18 for pb1 gpioA bit 15 for pb2
+    ();
+
+    GPIOB->ICLR |= (1 << 1);
+
+    GPIOB->POLARITY |= (1 << 1);
+
+    NVIC_EnableIRQ(GPIOB_INT_IRQn);
 }
 
 void run_lab7_p3(void){
