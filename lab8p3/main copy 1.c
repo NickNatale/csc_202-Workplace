@@ -19,6 +19,7 @@
 // Loads standard C include files
 //-----------------------------------------------------------------------------
 
+
 #include <stdio.h>
 
 //-----------------------------------------------------------------------------
@@ -47,6 +48,7 @@ void GROUP1_IRQHandler(void);
 // NOTE: when possible avoid using global variables
 //-----------------------------------------------------------------------------
 bool g_SW1_pressed = false;
+bool g_SW2_pressed = false;
 //adc/455 makes 0-8
 // Define a structure to hold different data types
 
@@ -65,6 +67,11 @@ int main(void)
     GPIOB->CPU_INT.IMASK = GPIO_CPU_INT_IMASK_DIO18_SET;
     NVIC_SetPriority(GPIOB_INT_IRQn, 2);
     NVIC_EnableIRQ(GPIOB_INT_IRQn);
+    GPIOA->POLARITY15_0 = GPIO_POLARITY15_0_DIO15_RISE;
+    GPIOA->CPU_INT.ICLR = GPIO_CPU_INT_ICLR_DIO15_CLR;
+    GPIOA->CPU_INT.IMASK = GPIO_CPU_INT_IMASK_DIO15_SET;
+    NVIC_SetPriority(GPIOA_INT_IRQn, 2);
+    NVIC_EnableIRQ(GPIOA_INT_IRQn);
     run_lab8_p2();
     // Endless loop to prevent program from ending
  while (1){
@@ -82,6 +89,10 @@ void run_lab8_p2(void){
         printf("SW1 detected\n");
         g_SW1_pressed = false;
         done = true;
+        }
+        if (g_SW2_pressed){
+        printf("SW2 detected\n");
+        g_SW2_pressed = false;
         }
         Adc_value = ADC0_in(7);
         uint8_t i = 0;
@@ -114,14 +125,25 @@ void GROUP1_IRQHandler(void)
                     GPIOB->CPU_INT.ICLR = GPIO_CPU_INT_ICLR_DIO18_CLR;
                 }
                 break;
-            /*case (CPUSS_INT_GROUP_IIDX_STAT_INT0):
+            case (CPUSS_INT_GROUP_IIDX_STAT_INT0):
                 gpio_mis = GPIOA->CPU_INT.MIS;
                 if ((gpio_mis & GPIO_CPU_INT_MIS_DIO15_MASK) == GPIO_CPU_INT_MIS_DIO15_SET)
                 {
+                    uint8_t temp_in_F = 0;
+                    float temp = 0;
+                    uint16_t temp_val = 0;
                     g_SW2_pressed = true;
                     GPIOA->CPU_INT.ICLR = GPIO_CPU_INT_ICLR_DIO21_CLR;
+                    lcd_set_ddram_addr(LCD_LINE2_ADDR);
+                    lcd_write_string("Temp = ");
+                    temp_val = ADC0_in(5);
+                    temp = thermistor_calc_temperature(temp_val);
+                    temp_in_F = (temp * 9/5) + 32;
+                    lcd_write_doublebyte(temp_in_F);
+                    lcd_write_char(0xDF);
+                    lcd_write_string("F");
                 }
-                break; */
+                break; 
 
             default:
                 break;
